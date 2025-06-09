@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RightNumber</title>
+    <style>
+        html {
+            
+            text-align: center;
+        }
+        section {
+            max-width: 400px;
+            margin: 0 25%;
+            background-color: #838383;
+        }
+        .timer {
+            background-color: #8f8f8f;
+            margin: 13px
+        } 
+        .numero {
+            background-color: #fff;
+            border-radius: 50%;
+            margin: 42%;
+            width: 50px;
+            height: 50px;
+            padding: 10px;
+        }
+        #teclado {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        div > div {
+            background-color: #8f8f8f;
+            width: 25%;
+            margin: 3px;
+            cursor: pointer;
+            
+        }
+
+
+    </style>
+</head>
+<body>
+    <main>
+        <section>
+            <div>
+
+                    <h1>00:<span id="timer">00</span></h1>
+
+                <h2>ESCOLHA UM NÚMERO ENTRE <span class="x">x</span> E <span class="y">y</span></h2>
+            </div>
+            <div class="numero">
+                <h1 id="numero">?</h1>
+           </div>
+           <h2>O NÚMERO É <span class="maiormenor">...</span></h2>
+           <div id="teclado">
+                <div class="0">0</div>
+                <div class="1">1</div>
+                <div class="2">2</div>
+                <div class="3">3</div>
+                <div class="4">4</div>
+                <div class="5">5</div>
+                <div class="6">6</div>
+                <div class="7">7</div>
+                <div class="8">8</div>
+                <div class="9">9</div>
+           </div>
+        </section>
+    </main>
+    <p id="demo"></p>
+    <script>
+
+        let numero_aleatorio = Math.floor(Math.random() * 10);
+        let timer = Date.now() + 30000
+        while (timer > 0 && timer < 30 ){
+            const contador = setInterval(temporizador, 1000)
+        }
+        function temporizador(){
+            
+            setInterval(myTimer, 1000)
+            
+        }
+
+
+        let numero = document.getElementById("numero");
+        numero.addEventListener("click", function(){
+            numero.innerHTML = numero_aleatorio;
+            temporizador();
+        })
+
+        let tentativas = 3
+        let teclado = document.getElementById("teclado");
+        teclado.addEventListener("click", function (e){
+            while (tentativas > 0) {
+                console.log(numero_aleatorio)
+                if (e.target.className.toString() == numero_aleatorio.toString()) {
+                    alert("Você acertou!!!")
+                    tentativas = 0                
+                } else {
+                    alert("Você errou, tente novamente!")
+                    tentativas -= 1;
+                }
+            }
+
+        })
+
+        function myTimer() {
+            const d = (timer - Date.now())/1000
+
+            if (d >= 0 ){
+                if (d < 10){
+                    console.log("0" + d.toFixed().toString())
+                    document.getElementById("timer").innerHTML = d.toFixed().toString();
+                }
+                document.getElementById("timer").innerHTML = d.toFixed()
+            } else {
+                alert("Seu tempo esgotou!!!"); 
+                return;
+            }
+            return;
+        }
+    </script>
+</body>
+</html>
