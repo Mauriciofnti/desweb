@@ -6,7 +6,7 @@
     <title>RightNumber</title>
     <style>
         html {
-            
+
             text-align: center;
         }
         section {
@@ -17,7 +17,7 @@
         .timer {
             background-color: #8f8f8f;
             margin: 13px
-        } 
+        }
         .numero {
             background-color: #fff;
             border-radius: 50%;
@@ -36,7 +36,7 @@
             width: 25%;
             margin: 3px;
             cursor: pointer;
-            
+
         }
 
 
@@ -47,7 +47,7 @@
         <section>
             <div>
 
-                    <h1>00:<span id="timer">00</span></h1>
+                    <h1>00:<span id="timer">30</span></h1>
 
                 <h2>ESCOLHA UM NÚMERO ENTRE <span class="x">x</span> E <span class="y">y</span></h2>
             </div>
@@ -71,61 +71,75 @@
     </main>
     <p id="demo"></p>
     <script>
-        function init (){
-
-        }
-
         let numero_aleatorio = Math.floor(Math.random() * 10);
+        console.log("numero: " + numero_aleatorio)
         let timer = Date.now() + 30000
-        while (timer > 0 && timer < 30 ){
-            const contador = setInterval(temporizador, 1000)
-        }
+        let velocidade = 1;
+        // while (timer > 0 && timer < 30 ){
+        //     const contador = setInterval(temporizador, 1000)
+        // }
+        let intervalo = setInterval(myTimer,1000)
         function temporizador(){
-            
-            setInterval(myTimer, 1000)
-            
+            if (timer > 0) {
+                console.log(timer)
+                intervalo
+            } else {
+                clearInterval(intervalo)
+            }
+
         }
 
-
-        let numero = document.getElementById("numero");
-        numero.addEventListener("click", function(){
-            numero.innerHTML = numero_aleatorio;
-            temporizador();
-        })
-
-        let tentativas = 3
+        let numero_escolhido = 0;
+        let tentativas = 3;
         let teclado = document.getElementById("teclado");
-        let maiormenor = document.getElementById("maiormenor")
+        let maiormenor = document.getElementById("maiormenor");
         teclado.addEventListener("click", function (e){
             numero_escolhido = e.target.className.toString()
             numero_aleatorio = numero_aleatorio.toString()
-            while (tentativas > 0) {
-                console.log(numero_aleatorio)
+            console.log("teclado, tentativas: " + tentativas)
+            if (tentativas > 0) {
+                // console.log(numero_aleatorio)
                 if (numero_escolhido == numero_aleatorio) {
-                    alert("Você acertou!!!")
-                    tentativas = 0                
+                    numero.innerHTML = numero_aleatorio;
+                    tentativas = 0;
+                    maiormenor.innerHTML = numero_aleatorio;
+                    alert("Você acertou!!!");
+                    clearInterval(intervalo);
                 } else if(numero_escolhido > numero_aleatorio) {
-                    maiormenor.innerHTML = "menor"
-                    tentativas -= 1
+                    maiormenor.innerHTML = "menor";
+                    tentativas = tentativas - 1;
                 } else {
-                    maiormenor.innerHTML = "maior"
-                    tentativas -= 1;
+                    maiormenor.innerHTML = "maior";
+                    tentativas = tentativas - 1;
                 }
+            } else {
+                clearInterval(intervalo)
+                alert("Sem tentativas.")
             }
 
-        })
+        });
 
         function myTimer() {
-            const d = (timer - Date.now())/1000
-
+            if (tentativas == 3){
+                velocidade = 0
+            } else if (tentativas == 2) {
+                velocidade = 1
+            } else {
+                velocidade = 2
+                console.log(velocidade)
+            }
+            const d = ((timer - Date.now()) / 1000) - velocidade 
+            // console.log(d)
             if (d >= 0){
                 if (d < 10){
-                    console.log("0" + d.toFixed().toString())
+                    // console.log("0" + d.toFixed().toString())
                     document.getElementById("timer").innerHTML = d.toFixed().toString();
                 }
                 document.getElementById("timer").innerHTML = d.toFixed()
             } else {
-                alert("Seu tempo esgotou!!!"); 
+                clearInterval(intervalo)
+                alert("Seu tempo esgotou!!!");
+
                 return;
             }
             return;
